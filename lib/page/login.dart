@@ -39,8 +39,9 @@ class _LoginState extends State<LoginStart> {
           'Content-Type': 'application/json',
         },
         body: userJson);
-    //print(jsonDecode(response.body));
-    //print(Usuario.fromJson(jsonDecode(response.body)).toString());
+    print(response.body);
+    print(jsonDecode(response.body));
+    print(Usuario.fromJson(jsonDecode(response.body)).toString());
     return Usuario.fromJson(jsonDecode(response.body));
   }
 
@@ -125,11 +126,11 @@ class _LoginState extends State<LoginStart> {
                   Padding(
                       padding: EdgeInsets.only(top: 80.0, bottom: 20.0),
                       child: Container(
-                        height: 50.0,
+                        height: 40.0,
                         child: RaisedButton(
                           onPressed: () {
                             //Função cria Usuario;
-                            //Navigator.of(context).push(cadastroUsuario());
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => CadUserPage()));
                           },
                           child: Text(
                             "Cadastro Usuário",
@@ -142,7 +143,7 @@ class _LoginState extends State<LoginStart> {
                   Padding(
                       padding: EdgeInsets.only(top: 10.0, bottom: 20.0),
                       child: Container(
-                        height: 50.0,
+                        height: 40.0,
                         child: RaisedButton(
                           onPressed: () {
                             //Função cria Hemocentro;

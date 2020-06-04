@@ -1,4 +1,10 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:helplifeandroid/entity/tipoSanguineo.dart';
+import 'package:helplifeandroid/entity/usuario.dart';
+import 'package:http/http.dart' as http;
+
+const _request = "http://192.168.0.101:9030/api/v1/helplife/usuariocomum";
 
 class CadUserPage extends StatefulWidget {
   @override
@@ -27,23 +33,76 @@ class _CadUserPage extends State<CadUserPage> {
       senhaController.text = "";
       _infoText = "Informe seus Dados";
       _formKey = GlobalKey<FormState>();
+      _A1 = false;
+      _A2 = false;
+      _B1 = false;
+      _B2 = false;
+      _AB1 = false;
+      _AB2 = false;
+      _O1 = false;
+      _O2 = false;
     });
+  }
+
+  Future<void> criaUsuarioComum(Usuario user) async {
+    var userJson = jsonEncode(user);
+    print(userJson);
+    http.post(_request,
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+        },
+        body: userJson);
+  }
+
+  TipoSanguineo tp = TipoSanguineo();
+  bool _A1 = false;
+  bool _A2 = false;
+  bool _B1 = false;
+  bool _B2 = false;
+  bool _AB1 = false;
+  bool _AB2 = false;
+  bool _O1 = false;
+  bool _O2 = false;
+
+  void validaCheck() {
+    if (_A1 == true) {
+      tp.tipoSangue = "O+";
+      tp.id = 4;
+    } else if (_A2 == true) {
+      tp.tipoSangue = "O+";
+      tp.id = 3;
+    } else if (_B1 == true) {
+      tp.tipoSangue = "O+";
+      tp.id = 6;
+    } else if (_B2 == true) {
+      tp.tipoSangue = "O+";
+      tp.id = 5;
+    } else if (_AB1 == true) {
+      tp.tipoSangue = "O+";
+      tp.id = 8;
+    } else if (_AB2 == true) {
+      tp.tipoSangue = "O+";
+      tp.id = 7;
+    } else if (_O1 == true) {
+      tp.tipoSangue = "O+";
+      tp.id = 1;
+    } else if (_O2 == true) {
+      tp.tipoSangue = "O-";
+      tp.id = 2;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Help Life"),
+          title: Text("Cadastro Usuário"),
           centerTitle: true,
           backgroundColor: Colors.red,
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.refresh),
               onPressed: _resetFields,
-            ),
-            IconButton(
-              icon: Icon(Icons.reply),
             )
           ],
         ),
@@ -196,6 +255,173 @@ class _CadUserPage extends State<CadUserPage> {
                         return "Insira sua Data de Nascimento!";
                       }
                     },
+                  ),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 10.0),
+                    child: Text(
+                      "Escolha seu Tipo Sanguineo",
+                      style: TextStyle(color: Colors.red, fontSize: 25.0),
+                    ),
+                  ),
+                  new Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        new Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            new Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text("A+",
+                                      style: TextStyle(
+                                          fontSize: 25.0, color: Colors.red)),
+                                  new Transform.scale(
+                                      scale: 1.5,
+                                      child: new Checkbox(
+                                        onChanged: (bool resp) {
+                                          setState(() {
+                                            _A1 = resp;
+                                            validaCheck();
+                                          });
+                                        },
+                                        value: _A1,
+                                      )),
+                                  Text("A-",
+                                      style: TextStyle(
+                                          fontSize: 25.0, color: Colors.red)),
+                                  new Transform.scale(
+                                      scale: 1.5,
+                                      child: new Checkbox(
+                                        onChanged: (bool resp) {
+                                          setState(() {
+                                            _A2 = resp;
+                                            validaCheck();
+                                          });
+                                        },
+                                        value: _A2,
+                                      )),
+                                  Text("B+",
+                                      style: TextStyle(
+                                          fontSize: 25.0, color: Colors.red)),
+                                  new Transform.scale(
+                                      scale: 1.5,
+                                      child: new Checkbox(
+                                        onChanged: (bool resp) {
+                                          setState(() {
+                                            _B1 = resp;
+                                            validaCheck();
+                                          });
+                                        },
+                                        value: _B1,
+                                      )),
+                                  Text("B-",
+                                      style: TextStyle(
+                                          fontSize: 25.0, color: Colors.red)),
+                                  new Transform.scale(
+                                      scale: 1.5,
+                                      child: new Checkbox(
+                                        onChanged: (bool resp) {
+                                          setState(() {
+                                            _B2 = resp;
+                                            validaCheck();
+                                          });
+                                        },
+                                        value: _B2,
+                                      )),
+                                ]),
+                            new Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text("AB+",
+                                      style: TextStyle(
+                                          fontSize: 25.0, color: Colors.red)),
+                                  new Transform.scale(
+                                      scale: 1.5,
+                                      child: new Checkbox(
+                                        onChanged: (bool resp) {
+                                          setState(() {
+                                            _AB1 = resp;
+                                            validaCheck();
+                                          });
+                                        },
+                                        value: _AB1,
+                                      )),
+                                  Text("AB-",
+                                      style: TextStyle(
+                                          fontSize: 25.0, color: Colors.red)),
+                                  new Transform.scale(
+                                      scale: 1.5,
+                                      child: new Checkbox(
+                                        onChanged: (bool resp) {
+                                          setState(() {
+                                            _AB2 = resp;
+                                            validaCheck();
+                                          });
+                                        },
+                                        value: _AB2,
+                                      )),
+                                  Text("O+",
+                                      style: TextStyle(
+                                          fontSize: 25.0, color: Colors.red)),
+                                  new Transform.scale(
+                                      scale: 1.5,
+                                      child: new Checkbox(
+                                        onChanged: (bool resp) {
+                                          setState(() {
+                                            _O1 = resp;
+                                            validaCheck();
+                                          });
+                                        },
+                                        value: _O1,
+                                      )),
+                                  Text("O-",
+                                      style: TextStyle(
+                                          fontSize: 30.0, color: Colors.red)),
+                                  new Transform.scale(
+                                      scale: 1.5,
+                                      child: new Checkbox(
+                                        onChanged: (bool resp) {
+                                          setState(() {
+                                            _O2 = resp;
+                                            validaCheck();
+                                          });
+                                        },
+                                        value: _O2,
+                                      ))
+                                ]),
+                          ],
+                        )
+                      ]),
+                  Padding(
+                    padding: EdgeInsets.only(top: 50.0, bottom: 50.0),
+                    child: Container(
+                      height: 50.0,
+                      child: RaisedButton(
+                        onPressed: () async {
+                          Usuario user = Usuario();
+                          user.nome = nomeController.text;
+                          user.endereco = enderecoController.text;
+                          user.telefone = telefoneController.text;
+                          user.email = emailController.text;
+                          user.senha = senhaController.text;
+                          user.estado = estadoController.text;
+                          user.cidade = cidadeController.text;
+                          user.cep = cepController.text;
+                          user.sexo = sexoController.text;
+                          user.dataNascimento = dataNascimentoController.text;
+                          user.tipoSanguineo = tp;
+                          print(user);
+                          if (_formKey.currentState.validate()) {
+                            criaUsuarioComum(user);
+                          }
+                        },
+                        child: Text(
+                          "Cadastrar",
+                          style: TextStyle(color: Colors.white, fontSize: 25.0),
+                        ),
+                        color: Colors.red,
+                      ),
+                    ),
                   ),
                 ],
               ),
