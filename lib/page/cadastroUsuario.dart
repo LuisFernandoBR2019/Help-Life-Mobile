@@ -4,7 +4,7 @@ import 'package:helplifeandroid/entity/tipoSanguineo.dart';
 import 'package:helplifeandroid/entity/usuario.dart';
 import 'package:http/http.dart' as http;
 
-const _request = "http://192.168.0.101:9030/api/v1/helplife/usuariocomum";
+const _request = "http://192.168.0.104:9006/api/v1/helplife/usuariocomum";
 
 class CadUserPage extends StatefulWidget {
   @override
@@ -20,7 +20,6 @@ class _CadUserPage extends State<CadUserPage> {
   TextEditingController estadoController = TextEditingController();
   TextEditingController cidadeController = TextEditingController();
   TextEditingController cepController = TextEditingController();
-  TextEditingController tipoSanguineoController = TextEditingController();
   TextEditingController sexoController = TextEditingController();
   TextEditingController dataNascimentoController = TextEditingController();
 
@@ -31,6 +30,14 @@ class _CadUserPage extends State<CadUserPage> {
     setState(() {
       emailController.text = "";
       senhaController.text = "";
+      estadoController.text = "";
+      cidadeController.text = "";
+      cepController.text = "";
+      nomeController.text = "";
+      enderecoController.text = "";
+      telefoneController.text = "";
+      sexoController.text = "";
+      dataNascimentoController.text = "";
       _infoText = "Informe seus Dados";
       _formKey = GlobalKey<FormState>();
       _A1 = false;
@@ -42,6 +49,47 @@ class _CadUserPage extends State<CadUserPage> {
       _O1 = false;
       _O2 = false;
     });
+  }
+  void _showDialogSuccess() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // retorna um objeto do tipo Dialog
+        return AlertDialog(
+          title: new Text("Cadastro efetuado com sucesso!"),
+          actions: <Widget>[
+            // define os botões na base do dialogo
+            new FlatButton(
+              child: new Text("Ir para tela Login!"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showDialogFailed() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // retorna um objeto do tipo Dialog
+        return AlertDialog(
+          title: new Text("Não foi possível efetuar o Cadastro!"),
+          actions: <Widget>[
+            // define os botões na base do dialogo
+            new FlatButton(
+              child: new Text("Voltar!"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   Future<void> criaUsuarioComum(Usuario user) async {
@@ -182,7 +230,7 @@ class _CadUserPage extends State<CadUserPage> {
                     controller: senhaController,
                     validator: (value) {
                       if (value.isEmpty) {
-                        return "Insira sua Senha!";
+                        return "Insira sua Senha ou Insira uma senha de pelo menos 06 digitos.";
                       }
                     },
                   ),
@@ -410,9 +458,12 @@ class _CadUserPage extends State<CadUserPage> {
                           user.sexo = sexoController.text;
                           user.dataNascimento = dataNascimentoController.text;
                           user.tipoSanguineo = tp;
-                          print(user);
                           if (_formKey.currentState.validate()) {
                             criaUsuarioComum(user);
+                            _showDialogSuccess();
+                            _resetFields();
+                          }else{
+                            _showDialogFailed();
                           }
                         },
                         child: Text(

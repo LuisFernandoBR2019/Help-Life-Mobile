@@ -7,9 +7,10 @@ import 'package:helplifeandroid/entity/usuario.dart';
 import 'package:http/http.dart' as http;
 import 'package:async/async.dart';
 
+import 'cadastroHemocentro.dart';
 import 'cadastroUsuario.dart';
 
-const _request = "http://192.168.0.101:9030/api/v1/helplife/login";
+const _request = "http://192.168.0.104:9006/api/v1/helplife/login";
 
 class LoginStart extends StatefulWidget {
   @override
@@ -31,6 +32,47 @@ class _LoginState extends State<LoginStart> {
       _formKey = GlobalKey<FormState>();
     });
   }
+  void _showDialogSuccess() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // retorna um objeto do tipo Dialog
+        return AlertDialog(
+          title: new Text("Login efetuado com sucesso!"),
+          actions: <Widget>[
+            // define os botões na base do dialogo
+            new FlatButton(
+              child: new Text("Prosseguir!"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showDialogFailed() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // retorna um objeto do tipo Dialog
+        return AlertDialog(
+          title: new Text("Não foi possível efetuar o Login!"),
+          actions: <Widget>[
+            // define os botões na base do dialogo
+            new FlatButton(
+              child: new Text("Voltar!"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   Future<Usuario> efetuarLogin(Login user) async {
     var userJson = jsonEncode(user);
@@ -39,9 +81,6 @@ class _LoginState extends State<LoginStart> {
           'Content-Type': 'application/json',
         },
         body: userJson);
-    print(response.body);
-    print(jsonDecode(response.body));
-    print(Usuario.fromJson(jsonDecode(response.body)).toString());
     return Usuario.fromJson(jsonDecode(response.body));
   }
 
@@ -108,8 +147,18 @@ class _LoginState extends State<LoginStart> {
                             userLogin.email = emailController.text;
                             userLogin.senha = senhaController.text;
                             Usuario user = await efetuarLogin(userLogin);
-                            String tipoUsuario = user.dataNascimento;
-                            if (tipoUsuario == null) {}
+                            setState(() {
+                              if (user.nome != null) {
+                                String tipoUsuario = user.dataNascimento;
+                                _resetFields();
+                                _showDialogSuccess();
+
+                                if (tipoUsuario == null) {
+                                } else {}
+                              } else {
+                                  _showDialogFailed();
+                              }
+                            });
                           }
                         },
                         child: Text(
@@ -129,8 +178,11 @@ class _LoginState extends State<LoginStart> {
                         height: 40.0,
                         child: RaisedButton(
                           onPressed: () {
-                            //Função cria Usuario;
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => CadUserPage()));
+                            //Página cria Usuario;
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => CadUserPage()));
                           },
                           child: Text(
                             "Cadastro Usuário",
@@ -146,7 +198,11 @@ class _LoginState extends State<LoginStart> {
                         height: 40.0,
                         child: RaisedButton(
                           onPressed: () {
-                            //Função cria Hemocentro;
+                            //Página cria Usuario;
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => CadHemoPage()));
                           },
                           child: Text(
                             "Cadastro Hemocentro",
