@@ -1,10 +1,13 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:helplifeandroid/entity/dadosLogin.dart';
 import 'package:helplifeandroid/entity/tipoSanguineo.dart';
 import 'package:helplifeandroid/entity/usuario.dart';
 import 'package:http/http.dart' as http;
 
-const _request = "http://192.168.0.104:9006/api/v1/helplife/usuariocomum";
+import 'login.dart';
+
+const _request = "http://npdi.ddns.net:9006/api/v1/helplife/usuariocomum";
 
 class CadUserPage extends StatefulWidget {
   @override
@@ -52,41 +55,29 @@ class _CadUserPage extends State<CadUserPage> {
   }
   void _showDialogSuccess() {
     showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        // retorna um objeto do tipo Dialog
-        return AlertDialog(
-          title: new Text("Cadastro efetuado com sucesso!"),
-          actions: <Widget>[
-            // define os botões na base do dialogo
-            new FlatButton(
-              child: new Text("Ir para tela Login!"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
+        context: context,
+        builder: (context) {
+          Future.delayed(Duration(seconds: 3), () {
+            Navigator.of(context).pushReplacement(MaterialPageRoute(
+                builder: (context) => LoginStart()));
+
+          });
+          return AlertDialog(
+            title: Text('Cadastro efetuado com sucesso!'),
+          );
+        });
   }
 
   void _showDialogFailed() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
+        Future.delayed(Duration(seconds: 3), () {
+          Navigator.of(context).pop();
+        });
         // retorna um objeto do tipo Dialog
         return AlertDialog(
           title: new Text("Não foi possível efetuar o Cadastro!"),
-          actions: <Widget>[
-            // define os botões na base do dialogo
-            new FlatButton(
-              child: new Text("Voltar!"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
         );
       },
     );
@@ -200,7 +191,7 @@ class _CadUserPage extends State<CadUserPage> {
                     style: TextStyle(color: Colors.red, fontSize: 25.0),
                     controller: telefoneController,
                     validator: (value) {
-                      if (value.isEmpty) {
+                      if (value.isEmpty || value.length < 6) {
                         return "Insira seu Telefone!";
                       }
                     },
@@ -214,7 +205,7 @@ class _CadUserPage extends State<CadUserPage> {
                     style: TextStyle(color: Colors.red, fontSize: 25.0),
                     controller: emailController,
                     validator: (value) {
-                      if (value.isEmpty) {
+                      if (value.isEmpty || value.length < 6) {
                         return "Insira seu Email!";
                       }
                     },
@@ -229,7 +220,7 @@ class _CadUserPage extends State<CadUserPage> {
                     style: TextStyle(color: Colors.red, fontSize: 25.0),
                     controller: senhaController,
                     validator: (value) {
-                      if (value.isEmpty) {
+                      if (value.isEmpty || value.length < 6) {
                         return "Insira sua Senha ou Insira uma senha de pelo menos 06 digitos.";
                       }
                     },
@@ -462,6 +453,10 @@ class _CadUserPage extends State<CadUserPage> {
                             criaUsuarioComum(user);
                             _showDialogSuccess();
                             _resetFields();
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => LoginStart()));
                           }else{
                             _showDialogFailed();
                           }

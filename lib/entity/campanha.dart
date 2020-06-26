@@ -1,12 +1,14 @@
+import 'package:helplifeandroid/entity/tipoSanguineo.dart';
+
 class Campanha {
   int id;
   String descricao;
   String nome;
   String dataInicio;
   String dataFim;
-  int status;
+  String status;
   int usuarioId;
-  int hemocentroId;
+  TipoSanguineo tipoSanguineo;
 
   Campanha({
     this.id,
@@ -16,7 +18,7 @@ class Campanha {
     this.dataFim,
     this.status,
     this.usuarioId,
-    this.hemocentroId,
+    this.tipoSanguineo,
   });
 
   Campanha.fromJson(Map<String, dynamic> json) {
@@ -27,7 +29,9 @@ class Campanha {
     dataFim = json['dataFim'];
     status = json['status'];
     usuarioId = json['usuarioId'];
-    hemocentroId = json['hemocentroId'];
+    tipoSanguineo = json['tipoSanguineo'] != null
+        ? new TipoSanguineo.fromJson(json['tipoSanguineo'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -39,7 +43,9 @@ class Campanha {
     data['dataFim'] = this.dataFim;
     data['status'] = this.status;
     data['usuarioId'] = this.usuarioId;
-    data['hemocentroId'] = this.hemocentroId;
+    if (this.tipoSanguineo != null) {
+      data['tipoSanguineo'] = this.tipoSanguineo.toJson();
+    }
 
     return data;
   }

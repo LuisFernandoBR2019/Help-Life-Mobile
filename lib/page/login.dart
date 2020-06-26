@@ -9,8 +9,9 @@ import 'package:async/async.dart';
 
 import 'cadastroHemocentro.dart';
 import 'cadastroUsuario.dart';
+import 'campanhaView.dart';
 
-const _request = "http://192.168.0.104:9006/api/v1/helplife/login";
+const _request = "http://npdi.ddns.net:9006/api/v1/helplife/login";
 
 class LoginStart extends StatefulWidget {
   @override
@@ -32,22 +33,34 @@ class _LoginState extends State<LoginStart> {
       _formKey = GlobalKey<FormState>();
     });
   }
-  void _showDialogSuccess() {
+
+  void _showDialogSuccessUsuario() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
+        Future.delayed(Duration(seconds: 3), () {
+          Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => CampanhaView()));
+        });
         // retorna um objeto do tipo Dialog
         return AlertDialog(
-          title: new Text("Login efetuado com sucesso!"),
-          actions: <Widget>[
-            // define os botões na base do dialogo
-            new FlatButton(
-              child: new Text("Prosseguir!"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
+          title: new Text("Acesso efetuado com sucesso!"),
+        );
+      },
+    );
+  }
+
+  void _showDialogSuccessHemocentro() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        Future.delayed(Duration(seconds: 3), () {
+          Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => CampanhaView()));
+        });
+        // retorna um objeto do tipo Dialog
+        return AlertDialog(
+          title: new Text("Acesso efetuado com sucesso!"),
         );
       },
     );
@@ -57,18 +70,12 @@ class _LoginState extends State<LoginStart> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
+        Future.delayed(Duration(seconds: 3), () {
+          Navigator.of(context).pop();
+        });
         // retorna um objeto do tipo Dialog
         return AlertDialog(
-          title: new Text("Não foi possível efetuar o Login!"),
-          actions: <Widget>[
-            // define os botões na base do dialogo
-            new FlatButton(
-              child: new Text("Voltar!"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
+          title: new Text("Não foi possível efetuar o acesso!"),
         );
       },
     );
@@ -116,7 +123,7 @@ class _LoginState extends State<LoginStart> {
                     style: TextStyle(color: Colors.red, fontSize: 25.0),
                     controller: emailController,
                     validator: (value) {
-                      if (value.isEmpty) {
+                      if (value.isEmpty || value.length < 6) {
                         return "Insira seu Email!";
                       }
                     },
@@ -131,7 +138,7 @@ class _LoginState extends State<LoginStart> {
                     style: TextStyle(color: Colors.red, fontSize: 25.0),
                     controller: senhaController,
                     validator: (value) {
-                      if (value.isEmpty) {
+                      if (value.isEmpty || value.length < 6) {
                         return "Insira sua Senha!";
                       }
                     },
@@ -151,12 +158,13 @@ class _LoginState extends State<LoginStart> {
                               if (user.nome != null) {
                                 String tipoUsuario = user.dataNascimento;
                                 _resetFields();
-                                _showDialogSuccess();
-
-                                if (tipoUsuario == null) {
-                                } else {}
+                                if (tipoUsuario != null) {
+                                  _showDialogSuccessUsuario();
+                                } else {
+                                  _showDialogSuccessHemocentro();
+                                }
                               } else {
-                                  _showDialogFailed();
+                                _showDialogFailed();
                               }
                             });
                           }

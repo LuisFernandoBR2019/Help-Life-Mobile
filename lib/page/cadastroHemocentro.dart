@@ -3,7 +3,9 @@ import 'package:helplifeandroid/entity/usuario.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-const _request = "http://192.168.0.104:9006/api/v1/helplife/hemocentro";
+import 'login.dart';
+
+const _request = "http://npdi.ddns.net:9006/api/v1/helplife/hemocentro";
 
 Future<void> criaUsuarioHemocentro(Usuario user) async {
   var userJson = jsonEncode(user);
@@ -50,41 +52,29 @@ class _CadHemoPageState extends State<CadHemoPage> {
 
   void _showDialogSuccess() {
     showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        // retorna um objeto do tipo Dialog
-        return AlertDialog(
-          title: new Text("Cadastro efetuado com sucesso!"),
-          actions: <Widget>[
-            // define os botões na base do dialogo
-            new FlatButton(
-              child: new Text("Ir para tela Login!"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
+        context: context,
+        builder: (context) {
+          Future.delayed(Duration(seconds: 3), () {
+            Navigator.of(context).pushReplacement(MaterialPageRoute(
+                builder: (context) => LoginStart()));
+          });
+          return AlertDialog(
+            title: Text('Cadastro efetuado com sucesso!'),
+          );
+        });
   }
+
 
   void _showDialogFailed() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
+        Future.delayed(Duration(seconds: 3), () {
+          Navigator.of(context).pop();
+        });
         // retorna um objeto do tipo Dialog
         return AlertDialog(
           title: new Text("Não foi possível efetuar o Cadastro!"),
-          actions: <Widget>[
-            // define os botões na base do dialogo
-            new FlatButton(
-              child: new Text("Voltar!"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
         );
       },
     );
@@ -150,7 +140,7 @@ class _CadHemoPageState extends State<CadHemoPage> {
                     style: TextStyle(color: Colors.red, fontSize: 25.0),
                     controller: telefoneController,
                     validator: (value) {
-                      if (value.isEmpty) {
+                      if (value.isEmpty || value.length < 6) {
                         return "Insira seu Telefone!";
                       }
                     },
@@ -164,7 +154,7 @@ class _CadHemoPageState extends State<CadHemoPage> {
                     style: TextStyle(color: Colors.red, fontSize: 25.0),
                     controller: emailController,
                     validator: (value) {
-                      if (value.isEmpty) {
+                      if (value.isEmpty || value.length < 6) {
                         return "Insira seu Email!";
                       }
                     },
@@ -179,7 +169,7 @@ class _CadHemoPageState extends State<CadHemoPage> {
                     style: TextStyle(color: Colors.red, fontSize: 25.0),
                     controller: senhaController,
                     validator: (value) {
-                      if (value.isEmpty) {
+                      if (value.isEmpty || value.length < 6) {
                         return "Insira sua Senha!";
                       }
                     },
@@ -245,8 +235,11 @@ class _CadHemoPageState extends State<CadHemoPage> {
                           if (_formKey.currentState.validate()) {
                             criaUsuarioHemocentro(user);
                             _showDialogSuccess();
-                            _resetFields();
-                          }else{
+                            //_resetFields();
+
+                            MaterialPageRoute(
+                                builder: (context) => LoginStart());
+                          } else {
                             _showDialogFailed();
                           }
                         },
