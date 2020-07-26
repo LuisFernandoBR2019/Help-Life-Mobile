@@ -1,24 +1,28 @@
+import 'package:helplifeandroid/entity/hemocentro.dart';
 import 'package:helplifeandroid/entity/tipoSanguineo.dart';
+import 'package:helplifeandroid/entity/usuario.dart';
 
 class Campanha {
   int id;
   String descricao;
   String nome;
   String dataInicio;
-  String dataFim;
+  String dataFinal;
   String status;
-  int usuarioId;
-  TipoSanguineo tipoSanguineo;
+  Usuario usuario;
+  Hemocentro hemocentro;
+  List<TipoSanguineo> tipoSanguineoList;
 
   Campanha({
     this.id,
     this.descricao,
     this.nome,
     this.dataInicio,
-    this.dataFim,
+    this.dataFinal,
+    this.hemocentro,
     this.status,
-    this.usuarioId,
-    this.tipoSanguineo,
+    this.usuario,
+    this.tipoSanguineoList,
   });
 
   Campanha.fromJson(Map<String, dynamic> json) {
@@ -26,12 +30,11 @@ class Campanha {
     descricao = json['descricao'];
     nome = json['nome'];
     dataInicio = json['dataInicio'];
-    dataFim = json['dataFim'];
+    dataFinal = json['dataFinal'];
     status = json['status'];
-    usuarioId = json['usuarioId'];
-    tipoSanguineo = json['tipoSanguineo'] != null
-        ? new TipoSanguineo.fromJson(json['tipoSanguineo'])
-        : null;
+    usuario = json['usuario'];
+    hemocentro = json['hemocentro'];
+    tipoSanguineoList = json['tipoSanguineoList'];
   }
 
   Map<String, dynamic> toJson() {
@@ -40,12 +43,11 @@ class Campanha {
     data['descricao'] = this.descricao;
     data['nome'] = this.nome;
     data['dataInicio'] = this.dataInicio;
-    data['dataFim'] = this.dataFim;
+    data['dataFinal'] = this.dataFinal;
     data['status'] = this.status;
-    data['usuarioId'] = this.usuarioId;
-    if (this.tipoSanguineo != null) {
-      data['tipoSanguineo'] = this.tipoSanguineo.toJson();
-    }
+    data['usuario'] = this.usuario;
+    data['hemocentro'] = this.hemocentro;
+    data['tipoSanguineoList'] = this.tipoSanguineoList;
 
     return data;
   }

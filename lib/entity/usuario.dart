@@ -1,4 +1,3 @@
-
 import 'package:helplifeandroid/entity/tipoSanguineo.dart';
 
 class Usuario {
@@ -12,6 +11,7 @@ class Usuario {
   String cidade;
   String cep;
   String status;
+  int tipo;
   TipoSanguineo tipoSanguineo;
   String sexo;
   String dataNascimento;
@@ -27,6 +27,7 @@ class Usuario {
       this.cidade,
       this.cep,
       this.status,
+      this.tipo,
       this.tipoSanguineo,
       this.sexo,
       this.dataNascimento});
@@ -41,6 +42,7 @@ class Usuario {
     estado = json['estado'];
     cidade = json['cidade'];
     cep = json['cep'];
+    tipo = json['tipo'];
     status = json['status'];
     tipoSanguineo = json['tipoSanguineo'] != null
         ? new TipoSanguineo.fromJson(json['tipoSanguineo'])
@@ -61,6 +63,7 @@ class Usuario {
     data['cidade'] = this.cidade;
     data['cep'] = this.cep;
     data['status'] = this.status;
+    data['tipo'] = this.tipo;
     if (this.tipoSanguineo != null) {
       data['tipoSanguineo'] = this.tipoSanguineo.toJson();
     }
@@ -71,6 +74,6 @@ class Usuario {
 
   @override
   String toString() {
-    return '$id | $nome | $endereco | $telefone | $email | $senha | $estado | $cidade | $cep | $status | $cep | $tipoSanguineo | $sexo | $dataNascimento';
+    return '$id | $nome | $endereco | $telefone | $email | $senha | $estado | $cidade | $cep | $status | $cep | $tipoSanguineo | $sexo | $dataNascimento | $tipo';
   }
 }

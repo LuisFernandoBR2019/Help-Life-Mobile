@@ -1,13 +1,13 @@
 import 'dart:convert';
+import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:helplifeandroid/entity/dadosLogin.dart';
 import 'package:helplifeandroid/entity/tipoSanguineo.dart';
 import 'package:helplifeandroid/entity/usuario.dart';
 import 'package:http/http.dart' as http;
 
 import 'login.dart';
 
-const _request = "http://npdi.ddns.net:9006/api/v1/helplife/usuariocomum";
+const _request = "http://192.168.0.100:9030/api/v1/helplife/usuariocomum";
 
 class CadUserPage extends StatefulWidget {
   @override
@@ -15,6 +15,25 @@ class CadUserPage extends StatefulWidget {
 }
 
 class _CadUserPage extends State<CadUserPage> {
+  Future<void> criaUsuarioComum(Usuario user) async {
+    var userJson = jsonEncode(user);
+
+    http
+        .post(_request,
+            headers: <String, String>{
+              'Content-Type': 'application/json',
+            },
+            body: userJson)
+        .then((http.Response response) {
+          print(response.statusCode);
+      if (response.statusCode == 201) {
+        _showDialogSuccess();
+      } else if (response.statusCode == 406) {
+        _showDialogFailed();
+      }
+    });
+  }
+
   TextEditingController nomeController = TextEditingController();
   TextEditingController enderecoController = TextEditingController();
   TextEditingController telefoneController = TextEditingController();
@@ -25,73 +44,8 @@ class _CadUserPage extends State<CadUserPage> {
   TextEditingController cepController = TextEditingController();
   TextEditingController sexoController = TextEditingController();
   TextEditingController dataNascimentoController = TextEditingController();
-
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String _infoText = "Informe seus Dados";
-
-  void _resetFields() {
-    setState(() {
-      emailController.text = "";
-      senhaController.text = "";
-      estadoController.text = "";
-      cidadeController.text = "";
-      cepController.text = "";
-      nomeController.text = "";
-      enderecoController.text = "";
-      telefoneController.text = "";
-      sexoController.text = "";
-      dataNascimentoController.text = "";
-      _infoText = "Informe seus Dados";
-      _formKey = GlobalKey<FormState>();
-      _A1 = false;
-      _A2 = false;
-      _B1 = false;
-      _B2 = false;
-      _AB1 = false;
-      _AB2 = false;
-      _O1 = false;
-      _O2 = false;
-    });
-  }
-  void _showDialogSuccess() {
-    showDialog(
-        context: context,
-        builder: (context) {
-          Future.delayed(Duration(seconds: 3), () {
-            Navigator.of(context).pushReplacement(MaterialPageRoute(
-                builder: (context) => LoginStart()));
-
-          });
-          return AlertDialog(
-            title: Text('Cadastro efetuado com sucesso!'),
-          );
-        });
-  }
-
-  void _showDialogFailed() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        Future.delayed(Duration(seconds: 3), () {
-          Navigator.of(context).pop();
-        });
-        // retorna um objeto do tipo Dialog
-        return AlertDialog(
-          title: new Text("Não foi possível efetuar o Cadastro!"),
-        );
-      },
-    );
-  }
-
-  Future<void> criaUsuarioComum(Usuario user) async {
-    var userJson = jsonEncode(user);
-    print(userJson);
-    http.post(_request,
-        headers: <String, String>{
-          'Content-Type': 'application/json',
-        },
-        body: userJson);
-  }
 
   TipoSanguineo tp = TipoSanguineo();
   bool _A1 = false;
@@ -129,6 +83,60 @@ class _CadUserPage extends State<CadUserPage> {
       tp.tipoSangue = "O-";
       tp.id = 2;
     }
+  }
+
+  void _resetFields() {
+    setState(() {
+      emailController.text = "";
+      senhaController.text = "";
+      estadoController.text = "";
+      cidadeController.text = "";
+      cepController.text = "";
+      nomeController.text = "";
+      enderecoController.text = "";
+      telefoneController.text = "";
+      sexoController.text = "";
+      dataNascimentoController.text = "";
+      _infoText = "Informe seus Dados";
+      _formKey = GlobalKey<FormState>();
+      _A1 = false;
+      _A2 = false;
+      _B1 = false;
+      _B2 = false;
+      _AB1 = false;
+      _AB2 = false;
+      _O1 = false;
+      _O2 = false;
+    });
+  }
+
+  void _showDialogSuccess() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          Future.delayed(Duration(seconds: 3), () {
+            Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (context) => LoginStart()));
+          });
+          return AlertDialog(
+            title: Text('Cadastro efetuado com sucesso!'),
+          );
+        });
+  }
+
+  void _showDialogFailed() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        Future.delayed(Duration(seconds: 3), () {
+          Navigator.of(context).pop();
+        });
+        // retorna um objeto do tipo Dialog
+        return AlertDialog(
+          title: new Text("Não foi possível efetuar o Cadastro!"),
+        );
+      },
+    );
   }
 
   @override
@@ -282,7 +290,7 @@ class _CadUserPage extends State<CadUserPage> {
                     },
                   ),
                   TextFormField(
-                    keyboardType: TextInputType.text,
+                    keyboardType: TextInputType.datetime,
                     decoration: InputDecoration(
                         labelText: "Data de Nascimento:",
                         labelStyle: TextStyle(color: Colors.red)),
@@ -320,6 +328,15 @@ class _CadUserPage extends State<CadUserPage> {
                                         onChanged: (bool resp) {
                                           setState(() {
                                             _A1 = resp;
+                                            if (_A1 == true) {
+                                              _A2 = false;
+                                              _AB1 = false;
+                                              _AB2 = false;
+                                              _B1 = false;
+                                              _B2 = false;
+                                              _O1 = false;
+                                              _O2 = false;
+                                            }
                                             validaCheck();
                                           });
                                         },
@@ -334,6 +351,15 @@ class _CadUserPage extends State<CadUserPage> {
                                         onChanged: (bool resp) {
                                           setState(() {
                                             _A2 = resp;
+                                            if (_A2 == true) {
+                                              _A1 = false;
+                                              _AB1 = false;
+                                              _AB2 = false;
+                                              _B1 = false;
+                                              _B2 = false;
+                                              _O1 = false;
+                                              _O2 = false;
+                                            }
                                             validaCheck();
                                           });
                                         },
@@ -348,6 +374,15 @@ class _CadUserPage extends State<CadUserPage> {
                                         onChanged: (bool resp) {
                                           setState(() {
                                             _B1 = resp;
+                                            if (_B1 == true) {
+                                              _A1 = false;
+                                              _AB1 = false;
+                                              _AB2 = false;
+                                              _A2 = false;
+                                              _B2 = false;
+                                              _O1 = false;
+                                              _O2 = false;
+                                            }
                                             validaCheck();
                                           });
                                         },
@@ -362,6 +397,15 @@ class _CadUserPage extends State<CadUserPage> {
                                         onChanged: (bool resp) {
                                           setState(() {
                                             _B2 = resp;
+                                            if (_B2 == true) {
+                                              _A1 = false;
+                                              _AB1 = false;
+                                              _AB2 = false;
+                                              _B1 = false;
+                                              _A2 = false;
+                                              _O1 = false;
+                                              _O2 = false;
+                                            }
                                             validaCheck();
                                           });
                                         },
@@ -380,6 +424,15 @@ class _CadUserPage extends State<CadUserPage> {
                                         onChanged: (bool resp) {
                                           setState(() {
                                             _AB1 = resp;
+                                            if (_AB1 == true) {
+                                              _A1 = false;
+                                              _A2 = false;
+                                              _AB2 = false;
+                                              _B1 = false;
+                                              _B2 = false;
+                                              _O1 = false;
+                                              _O2 = false;
+                                            }
                                             validaCheck();
                                           });
                                         },
@@ -394,6 +447,15 @@ class _CadUserPage extends State<CadUserPage> {
                                         onChanged: (bool resp) {
                                           setState(() {
                                             _AB2 = resp;
+                                            if (_AB2 == true) {
+                                              _A1 = false;
+                                              _AB1 = false;
+                                              _A2 = false;
+                                              _B1 = false;
+                                              _B2 = false;
+                                              _O1 = false;
+                                              _O2 = false;
+                                            }
                                             validaCheck();
                                           });
                                         },
@@ -408,6 +470,15 @@ class _CadUserPage extends State<CadUserPage> {
                                         onChanged: (bool resp) {
                                           setState(() {
                                             _O1 = resp;
+                                            if (_O1 == true) {
+                                              _A1 = false;
+                                              _AB1 = false;
+                                              _AB2 = false;
+                                              _B1 = false;
+                                              _B2 = false;
+                                              _A2 = false;
+                                              _O2 = false;
+                                            }
                                             validaCheck();
                                           });
                                         },
@@ -422,6 +493,15 @@ class _CadUserPage extends State<CadUserPage> {
                                         onChanged: (bool resp) {
                                           setState(() {
                                             _O2 = resp;
+                                            if (_O2 == true) {
+                                              _A1 = false;
+                                              _AB1 = false;
+                                              _AB2 = false;
+                                              _B1 = false;
+                                              _B2 = false;
+                                              _O1 = false;
+                                              _A2 = false;
+                                            }
                                             validaCheck();
                                           });
                                         },
@@ -451,13 +531,9 @@ class _CadUserPage extends State<CadUserPage> {
                           user.tipoSanguineo = tp;
                           if (_formKey.currentState.validate()) {
                             criaUsuarioComum(user);
-                            _showDialogSuccess();
+                            // _showDialogSuccess();
                             _resetFields();
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => LoginStart()));
-                          }else{
+                          } else {
                             _showDialogFailed();
                           }
                         },

@@ -1,18 +1,24 @@
+import 'package:helplifeandroid/entity/hemocentro.dart';
+import 'package:helplifeandroid/entity/tipoSanguineo.dart';
+import 'package:helplifeandroid/entity/usuario.dart';
+
 class Solicitacao {
   int id;
   String descricao;
   String dataHora;
-  int status;
-  int usuarioId;
-  int hemocentroId;
+  String status;
+  Usuario usuario;
+  Hemocentro hemocentro;
+  List<TipoSanguineo> tipoSanguineo;
 
   Solicitacao({
     this.id,
     this.descricao,
     this.dataHora,
     this.status,
-    this.usuarioId,
-    this.hemocentroId,
+    this.usuario,
+    this.hemocentro,
+    this.tipoSanguineo,
   });
 
   Solicitacao.fromJson(Map<String, dynamic> json) {
@@ -20,8 +26,9 @@ class Solicitacao {
     descricao = json['descricao'];
     dataHora = json['dataHora'];
     status = json['status'];
-    usuarioId = json['usuarioId'];
-    hemocentroId = json['hemocentroId'];
+    usuario = json['usuarioComum'];
+    hemocentro = json['hemocentro'];
+    tipoSanguineo = json['tipoSanguineoList'];
   }
 
   Map<String, dynamic> toJson() {
@@ -30,8 +37,9 @@ class Solicitacao {
     data['descricao'] = this.descricao;
     data['dataHora'] = this.dataHora;
     data['status'] = this.status;
-    data['usuarioId'] = this.usuarioId;
-    data['hemocentroId'] = this.hemocentroId;
+    data['usuarioComum'] = this.usuario;
+    data['hemocentro'] = this.hemocentro;
+    data['tipoSanguineoList'] = this.tipoSanguineo;
 
     return data;
   }

@@ -4,14 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:helplifeandroid/entity/dadosLogin.dart';
 import 'package:helplifeandroid/entity/usuario.dart';
+import 'package:helplifeandroid/page/dashboardHemocentro.dart';
+import 'package:helplifeandroid/page/dashboardUsuario.dart';
+import 'package:helplifeandroid/page/recuperarSenha.dart';
 import 'package:http/http.dart' as http;
-import 'package:async/async.dart';
 
 import 'cadastroHemocentro.dart';
 import 'cadastroUsuario.dart';
-import 'campanhaView.dart';
 
-const _request = "http://npdi.ddns.net:9006/api/v1/helplife/login";
+const _request = "http://192.168.0.100:9030/api/v1/helplife/login";
 
 class LoginStart extends StatefulWidget {
   @override
@@ -34,30 +35,42 @@ class _LoginState extends State<LoginStart> {
     });
   }
 
-  void _showDialogSuccessUsuario() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        Future.delayed(Duration(seconds: 3), () {
-          Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => CampanhaView()));
-        });
-        // retorna um objeto do tipo Dialog
-        return AlertDialog(
-          title: new Text("Acesso efetuado com sucesso!"),
-        );
-      },
-    );
+  Future<void> efetuarLogin(Login user) async {
+    var userJson = jsonEncode(user);
+    http.Response response = await http.post(_request,
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+        },
+        body: userJson);
+    Usuario usuario = Usuario.fromJson(jsonDecode(response.body));
+    if (usuario.id != null) {
+      _showDialogSuccessUsuario(usuario.tipo, usuario);
+    } else {
+      _showDialogFailed();
+    }
   }
 
-  void _showDialogSuccessHemocentro() {
+  void _showDialogSuccessUsuario(int tipoUsuario, Usuario user) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        Future.delayed(Duration(seconds: 3), () {
-          Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => CampanhaView()));
-        });
+        Center(child: CircularProgressIndicator());
+        if (tipoUsuario == 0) {
+          Future.delayed(Duration(seconds: 3), () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => DashboardUsuario(user)));
+          });
+        }
+        if (tipoUsuario == 1) {
+          Future.delayed(Duration(seconds: 3), () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => DashboardHemocentro(user)));
+          });
+        }
         // retorna um objeto do tipo Dialog
         return AlertDialog(
           title: new Text("Acesso efetuado com sucesso!"),
@@ -70,6 +83,7 @@ class _LoginState extends State<LoginStart> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
+        Center(child: CircularProgressIndicator());
         Future.delayed(Duration(seconds: 3), () {
           Navigator.of(context).pop();
         });
@@ -79,16 +93,6 @@ class _LoginState extends State<LoginStart> {
         );
       },
     );
-  }
-
-  Future<Usuario> efetuarLogin(Login user) async {
-    var userJson = jsonEncode(user);
-    http.Response response = await http.post(_request,
-        headers: <String, String>{
-          'Content-Type': 'application/json',
-        },
-        body: userJson);
-    return Usuario.fromJson(jsonDecode(response.body));
   }
 
   @override
@@ -107,18 +111,19 @@ class _LoginState extends State<LoginStart> {
         ),
         backgroundColor: Colors.white,
         body: SingleChildScrollView(
-            padding: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
+            padding: EdgeInsets.fromLTRB(10.0, 15.0, 10.0, 0.0),
             child: Form(
               key: _formKey,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Icon(Icons.person_outline, size: 120.0, color: Colors.red),
                   TextFormField(
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
-                        labelText: "Email:",
-                        labelStyle: TextStyle(color: Colors.red)),
+                      labelText: "Email:",
+                      labelStyle: TextStyle(color: Colors.red),
+                    ),
                     textAlign: TextAlign.center,
                     style: TextStyle(color: Colors.red, fontSize: 25.0),
                     controller: emailController,
@@ -143,85 +148,130 @@ class _LoginState extends State<LoginStart> {
                       }
                     },
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
-                    child: Container(
-                      height: 50.0,
-                      child: RaisedButton(
-                        onPressed: () async {
-                          if (_formKey.currentState.validate()) {
-                            Login userLogin = Login();
-                            userLogin.email = emailController.text;
-                            userLogin.senha = senhaController.text;
-                            Usuario user = await efetuarLogin(userLogin);
-                            setState(() {
-                              if (user.nome != null) {
-                                String tipoUsuario = user.dataNascimento;
-                                _resetFields();
-                                if (tipoUsuario != null) {
-                                  _showDialogSuccessUsuario();
-                                } else {
-                                  _showDialogSuccessHemocentro();
-                                }
-                              } else {
-                                _showDialogFailed();
-                              }
-                            });
-                          }
-                        },
-                        child: Text(
-                          "Login",
-                          style: TextStyle(color: Colors.white, fontSize: 25.0),
-                        ),
-                        color: Colors.red,
+                  Container(
+                    padding: EdgeInsets.only(top: 30.0),
+                    width: 150.0,
+                    child: RaisedButton(
+                      onPressed: () async {
+                        if (_formKey.currentState.validate()) {
+                          Login userLogin = Login();
+                          userLogin.email = emailController.text;
+                          userLogin.senha = senhaController.text;
+                          efetuarLogin(userLogin);
+                        } else {
+                          _showDialogFailed();
+                        }
+                      },
+                      child: Text(
+                        "Login",
+                        style: TextStyle(color: Colors.white, fontSize: 25.0),
                       ),
+                      color: Colors.red,
                     ),
                   ),
                   Text(_infoText,
                       textAlign: TextAlign.center,
                       style: TextStyle(color: Colors.red, fontSize: 25.0)),
-                  Padding(
-                      padding: EdgeInsets.only(top: 80.0, bottom: 20.0),
-                      child: Container(
-                        height: 40.0,
-                        child: RaisedButton(
-                          onPressed: () {
-                            //Página cria Usuario;
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => CadUserPage()));
-                          },
-                          child: Text(
-                            "Cadastro Usuário",
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 25.0),
-                          ),
-                          color: Colors.red,
-                        ),
-                      )),
-                  Padding(
-                      padding: EdgeInsets.only(top: 10.0, bottom: 20.0),
-                      child: Container(
-                        height: 40.0,
-                        child: RaisedButton(
-                          onPressed: () {
-                            //Página cria Usuario;
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => CadHemoPage()));
-                          },
-                          child: Text(
-                            "Cadastro Hemocentro",
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 25.0),
-                          ),
-                          color: Colors.red,
-                        ),
-                      )),
+                  Container(
+                    width: 220.0,
+                    padding: EdgeInsets.fromLTRB(0.0, 25.0, 0.0, 25.0),
+                    child: RaisedButton(
+                      onPressed: () {
+                        //Página cria Usuario;
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Cadastro()));
+                      },
+                      child: Text(
+                        "Cadastrar-se",
+                        style: TextStyle(color: Colors.white, fontSize: 25.0),
+                      ),
+                      color: Colors.red,
+                    ),
+                  ),
+                  Container(
+                    child: RaisedButton(
+                      onPressed: () {
+                        //Página cria Usuario;
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => RecuperarSenha()));
+                      },
+                      child: Text(
+                        "Recuperar senha",
+                        style: TextStyle(color: Colors.white, fontSize: 25.0),
+                      ),
+                      color: Colors.red,
+                    ),
+                  ),
                 ],
               ),
             )));
+  }
+}
+
+class Cadastro extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Cadastro"),
+        centerTitle: true,
+        backgroundColor: Colors.red,
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                    width: 175,
+                    height: 100,
+                    padding: EdgeInsets.fromLTRB(0.0, 25.0, 0.0, 25.0),
+                    child: RaisedButton(
+                      child: Text(
+                        "Usuário",
+                        style: TextStyle(color: Colors.white, fontSize: 25.0),
+                      ),
+                      color: Colors.red,
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => CadUserPage()));
+                      },
+                    )),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                    width: 175,
+                    height: 100,
+                    padding: EdgeInsets.fromLTRB(0.0, 25.0, 0.0, 25.0),
+                    child: RaisedButton(
+                      child: Text(
+                        "Hemocentro",
+                        style: TextStyle(color: Colors.white, fontSize: 25.0),
+                      ),
+                      color: Colors.red,
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => CadHemoPage()));
+                      },
+                    )),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

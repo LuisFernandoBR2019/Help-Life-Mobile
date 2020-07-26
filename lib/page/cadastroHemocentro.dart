@@ -5,17 +5,7 @@ import 'dart:convert';
 
 import 'login.dart';
 
-const _request = "http://npdi.ddns.net:9006/api/v1/helplife/hemocentro";
-
-Future<void> criaUsuarioHemocentro(Usuario user) async {
-  var userJson = jsonEncode(user);
-  print(userJson);
-  http.post(_request,
-      headers: <String, String>{
-        'Content-Type': 'application/json',
-      },
-      body: userJson);
-}
+const _request = "http://192.168.0.100:9030/api/v1/helplife/hemocentro";
 
 class CadHemoPage extends StatefulWidget {
   @override
@@ -23,6 +13,25 @@ class CadHemoPage extends StatefulWidget {
 }
 
 class _CadHemoPageState extends State<CadHemoPage> {
+  Future<void> criaUsuarioHemocentro(Usuario user) async {
+    var userJson = jsonEncode(user);
+    print(userJson);
+    http
+        .post(_request,
+            headers: <String, String>{
+              'Content-Type': 'application/json',
+            },
+            body: userJson)
+        .then((http.Response response) {
+      print(response.statusCode);
+      if (response.statusCode == 201) {
+        _showDialogSuccess();
+      } else if (response.statusCode == 406) {
+        _showDialogFailed();
+      }
+    });
+  }
+
   TextEditingController nomeController = TextEditingController();
   TextEditingController enderecoController = TextEditingController();
   TextEditingController telefoneController = TextEditingController();
@@ -55,15 +64,14 @@ class _CadHemoPageState extends State<CadHemoPage> {
         context: context,
         builder: (context) {
           Future.delayed(Duration(seconds: 3), () {
-            Navigator.of(context).pushReplacement(MaterialPageRoute(
-                builder: (context) => LoginStart()));
+            Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (context) => LoginStart()));
           });
           return AlertDialog(
             title: Text('Cadastro efetuado com sucesso!'),
           );
         });
   }
-
 
   void _showDialogFailed() {
     showDialog(
@@ -234,8 +242,7 @@ class _CadHemoPageState extends State<CadHemoPage> {
                           print(user);
                           if (_formKey.currentState.validate()) {
                             criaUsuarioHemocentro(user);
-                            _showDialogSuccess();
-                            //_resetFields();
+                            _resetFields();
 
                             MaterialPageRoute(
                                 builder: (context) => LoginStart());
