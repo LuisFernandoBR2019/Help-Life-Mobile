@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:helplifeandroid/entity/usuario.dart';
 import 'package:http/http.dart' as http;
 
-var _request = "http://192.168.0.100:9030/api/v1/helplife/usuario/";
+var _request = "http://192.168.0.104:9006/api/v1/helplife/usuario/";
 
-var _requestPut = "http://192.168.0.100:9030/api/v1/helplife/";
+var _requestPut = "http://192.168.0.104:9006/api/v1/helplife/";
 
 Usuario usuario = Usuario();
 

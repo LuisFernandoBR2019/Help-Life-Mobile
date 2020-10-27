@@ -12,7 +12,7 @@ import 'package:http/http.dart' as http;
 import 'cadastroHemocentro.dart';
 import 'cadastroUsuario.dart';
 
-const _request = "http://192.168.0.100:9030/api/v1/helplife/login";
+const _request = "http://192.168.0.104:9006/api/v1/helplife/login";
 
 class LoginStart extends StatefulWidget {
   @override
@@ -45,6 +45,7 @@ class _LoginState extends State<LoginStart> {
     Usuario usuario = Usuario.fromJson(jsonDecode(response.body));
     if (usuario.id != null) {
       _showDialogSuccessUsuario(usuario.tipo, usuario);
+      _resetFields();
     } else {
       _showDialogFailed();
     }
@@ -163,7 +164,7 @@ class _LoginState extends State<LoginStart> {
                         }
                       },
                       child: Text(
-                        "Login",
+                        "Acessar",
                         style: TextStyle(color: Colors.white, fontSize: 25.0),
                       ),
                       color: Colors.red,

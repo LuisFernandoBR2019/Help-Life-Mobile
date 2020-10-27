@@ -15,7 +15,7 @@ List<dynamic> hemocentroListAtualiza = null; //atualiza campanha
 List<Hemocentro> listHemocentroAtualiza =
     List<Hemocentro>(); //atualiza campanha
 
-const _request = "http://192.168.0.100:9030/api/v1/helplife/campanha";
+const _request = "http://192.168.0.104:9006/api/v1/helplife/campanha";
 List<dynamic> campanhas = new List<dynamic>();
 List<Campanha> listaCampanha = List<Campanha>();
 
@@ -293,9 +293,9 @@ class _MyCampanhaState extends State<MyCampanha> {
   }
 
   var ativaCampanha =
-      "http://192.168.0.100:9030/api/v1/helplife/campanha/ativa/";
+      "http://192.168.0.104:9006/api/v1/helplife/campanha/ativa/";
   var desativaCampanha =
-      "http://192.168.0.100:9030/api/v1/helplife/campanha/inativa/";
+      "http://192.168.0.104:9006/api/v1/helplife/campanha/inativa/";
 
   Future<void> ativarCampanha(int idCampanha) async {
     http.get(ativaCampanha + idCampanha.toString(), headers: <String, String>{
@@ -530,7 +530,7 @@ bool _AB1 = false;
 bool _AB2 = false;
 bool _O1 = false;
 bool _O2 = false;
-var _requestTwo = "http://192.168.0.100:9030/api/v1/helplife/campanha/";
+var _requestTwo = "http://192.168.0.104:9006/api/v1/helplife/campanha/";
 
 class _CampanhaIdSimpleState extends State<CampanhaIdSimple> {
   @override
@@ -761,7 +761,7 @@ bool __AB1 = false;
 bool __AB2 = false;
 bool __O1 = false;
 bool __O2 = false;
-const _requestThree = "http://192.168.0.100:9030/api/v1/helplife/usuario";
+const _requestThree = "http://192.168.0.104:9006/api/v1/helplife/usuario";
 
 class atualizaCampanha extends StatefulWidget {
   final Usuario user;
@@ -1010,12 +1010,29 @@ class _UpdateState extends State<Update> {
       print(response.statusCode);
       if (response.statusCode == 202) {
         _showDialogSuccess();
+        _resetFields();
       } else {
         _showDialogFailed();
       }
     });
   }
-
+  void _resetFields() {
+    setState(() {
+      nomeController.text = "";
+      descricaoController.text = "";
+      dataInicioController.text = "";
+      dataFimController.text = "";
+      _formKey = GlobalKey<FormState>();
+      _A1 = false;
+      _A2 = false;
+      _B1 = false;
+      _B2 = false;
+      _AB1 = false;
+      _AB2 = false;
+      _O1 = false;
+      _O2 = false;
+    });
+  }
   Hemocentro _selectedHemocentroAtualiza;
 
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();

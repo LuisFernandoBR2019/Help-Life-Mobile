@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:helplifeandroid/entity/solicitacao.dart';
 import 'package:share/share.dart';
 
-const _request = "http://192.168.0.100:9030/api/v1/helplife/solicitacao";
+const _request = "http://192.168.0.104:9006/api/v1/helplife/solicitacao";
 
 List<dynamic> solicitacoes = new List<dynamic>();
 List<Solicitacao> listaSolicitacao = null;
@@ -145,9 +145,9 @@ class MySolicitacao extends StatefulWidget {
 
 class _MySolicitacaoState extends State<MySolicitacao> {
   var ativaSolicitacao =
-      "http://192.168.0.100:9030/api/v1/helplife/solicitacao/ativa/";
+      "http://192.168.0.104:9006/api/v1/helplife/solicitacao/ativa/";
   var desativaSolicitacao =
-      "http://192.168.0.100:9030/api/v1/helplife/solicitacao/inativa/";
+      "http://192.168.0.104:9006/api/v1/helplife/solicitacao/inativa/";
 
   Future<void> ativarSolicitacao(int idCampanha) async {
     http.get(ativaSolicitacao + idCampanha.toString(),
@@ -430,7 +430,7 @@ class _SolicitacaoState extends State<SolicitacaoList> {
   }
 }
 
-var _requestTwo = "http://192.168.0.100:9030/api/v1/helplife/usuario";
+var _requestTwo = "http://192.168.0.104:9006/api/v1/helplife/usuario";
 
 class SolicitacaoSimpleID extends StatefulWidget {
   final int SolicitacaoID;
@@ -874,9 +874,26 @@ class _SolicitacaoIDSimpleState extends State<SolicitacaoIDSimple> {
       print(response.statusCode);
       if (response.statusCode == 202) {
         _showDialogSuccess();
+        _resetFields();
       } else if (response.statusCode == 406) {
         _showDialogFailed();
       }
+    });
+  }
+
+  void _resetFields() {
+    setState(() {
+      descricaoController.text = "";
+      dataHoraController.text = "";
+      _formKey = GlobalKey<FormState>();
+      _A1 = false;
+      _A2 = false;
+      _B1 = false;
+      _B2 = false;
+      _AB1 = false;
+      _AB2 = false;
+      _O1 = false;
+      _O2 = false;
     });
   }
 

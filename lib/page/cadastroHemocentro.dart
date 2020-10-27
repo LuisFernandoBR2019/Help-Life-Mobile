@@ -5,7 +5,7 @@ import 'dart:convert';
 
 import 'login.dart';
 
-const _request = "http://192.168.0.100:9030/api/v1/helplife/hemocentro";
+const _request = "http://192.168.0.104:9006/api/v1/helplife/hemocentro";
 
 class CadHemoPage extends StatefulWidget {
   @override
@@ -26,6 +26,7 @@ class _CadHemoPageState extends State<CadHemoPage> {
       print(response.statusCode);
       if (response.statusCode == 201) {
         _showDialogSuccess();
+        _resetFields();
       } else if (response.statusCode == 406) {
         _showDialogFailed();
       }
@@ -242,7 +243,6 @@ class _CadHemoPageState extends State<CadHemoPage> {
                           print(user);
                           if (_formKey.currentState.validate()) {
                             criaUsuarioHemocentro(user);
-                            _resetFields();
 
                             MaterialPageRoute(
                                 builder: (context) => LoginStart());

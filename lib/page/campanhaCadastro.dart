@@ -8,7 +8,7 @@ import 'package:helplifeandroid/entity/usuario.dart';
 import 'package:helplifeandroid/page/campanhaView.dart';
 import 'package:http/http.dart' as http;
 
-const _request = "http://192.168.0.100:9030/api/v1/helplife/campanha";
+const _request = "http://192.168.0.104:9006/api/v1/helplife/campanha";
 
 class CampanhaCadastro extends StatefulWidget {
   final Usuario user;
@@ -22,7 +22,7 @@ class CampanhaCadastro extends StatefulWidget {
 List<dynamic> hemocentroList = null;
 List<Hemocentro> listHemocentro = List<Hemocentro>();
 Hemocentro hemo = null;
-const _requestTwo = "http://192.168.0.100:9030/api/v1/helplife/usuario";
+const _requestTwo = "http://192.168.0.104:9006/api/v1/helplife/usuario";
 
 List<Hemocentro> HemocentroList = List<Hemocentro>();
 int HemocentroID = -1;
@@ -41,6 +41,7 @@ class _CampanhaCadastroState extends State<CampanhaCadastro> {
       print(response.statusCode);
       if (response.statusCode == 201) {
         _showDialogSuccess();
+        _resetFields();
       } else if (response.statusCode == 406) {
         _showDialogFailed();
       }

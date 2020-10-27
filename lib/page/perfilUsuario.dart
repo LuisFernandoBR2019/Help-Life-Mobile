@@ -6,8 +6,8 @@ import 'package:helplifeandroid/entity/tipoSanguineo.dart';
 import 'package:helplifeandroid/entity/usuario.dart';
 import 'package:http/http.dart' as http;
 
-var _request = "http://192.168.0.100:9030/api/v1/helplife/usuario/";
-var _requestPut = "http://192.168.0.100:9030/api/v1/helplife/";
+var _request = "http://192.168.0.104:9006/api/v1/helplife/usuario/";
+var _requestPut = "http://192.168.0.104:9006/api/v1/helplife/";
 TipoSanguineo tp = TipoSanguineo();
 bool _A1 = false;
 bool _A2 = false;
@@ -53,21 +53,21 @@ void preencherDados() {
 
 void preencheTipoSanguineo() {
   tp = usuario.tipoSanguineo;
-  if (tp.id == 1) {
+  if (tp.id == 2) {
     _O1 = true;
-  } else if (tp.id == 2) {
+  } else if (tp.id == 1) {
     _O2 = true;
-  } else if (tp.id == 3) {
-    _A2 = true;
   } else if (tp.id == 4) {
+    _A2 = true;
+  } else if (tp.id == 3) {
     _A1 = true;
-  } else if (tp.id == 5) {
-    _B2 = true;
   } else if (tp.id == 6) {
+    _B2 = true;
+  } else if (tp.id == 5) {
     _B1 = true;
-  } else if (tp.id == 7) {
-    _AB2 = true;
   } else if (tp.id == 8) {
+    _AB2 = true;
+  } else if (tp.id == 7) {
     _AB1 = true;
   }
 }
@@ -145,23 +145,23 @@ class Perfil extends StatefulWidget {
 class _PerfilState extends State<Perfil> {
   void validaCheck() {
     if (_A1 == true) {
-      tp.tipoSangue = "O+";
-      tp.id = 4;
-    } else if (_A2 == true) {
-      tp.tipoSangue = "O+";
+      tp.tipoSangue = "A+";
       tp.id = 3;
+    } else if (_A2 == true) {
+      tp.tipoSangue = "A-";
+      tp.id = 4;
     } else if (_B1 == true) {
-      tp.tipoSangue = "O+";
-      tp.id = 6;
-    } else if (_B2 == true) {
-      tp.tipoSangue = "O+";
+      tp.tipoSangue = "B+";
       tp.id = 5;
+    } else if (_B2 == true) {
+      tp.tipoSangue = "B-";
+      tp.id = 6;
     } else if (_AB1 == true) {
-      tp.tipoSangue = "O+";
-      tp.id = 8;
-    } else if (_AB2 == true) {
-      tp.tipoSangue = "O+";
+      tp.tipoSangue = "AB+";
       tp.id = 7;
+    } else if (_AB2 == true) {
+      tp.tipoSangue = "AB-";
+      tp.id = 8;
     } else if (_O1 == true) {
       tp.tipoSangue = "O+";
       tp.id = 1;

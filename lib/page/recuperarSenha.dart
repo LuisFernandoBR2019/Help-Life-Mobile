@@ -2,10 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:helplifeandroid/entity/usuario.dart';
-import 'package:helplifeandroid/page/login.dart';
+import 'package:helplifeandroid/page/recuperaSenhaDefinitivo.dart';
 import 'package:http/http.dart' as http;
 
-const _request = "http://192.168.0.101:9030/api/v1/helplife/recuperarSenha";
+const _request = "http://192.168.0.104:9006/api/v1/helplife/recuperarSenha";
 
 class RecuperarSenha extends StatefulWidget {
   @override
@@ -40,11 +40,10 @@ class _RecuperarSenhaState extends State<RecuperarSenha> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        Future.delayed(Duration(seconds: 3), () {
-          Navigator.of(context).pushReplacement(MaterialPageRoute(
-              builder: (context) => LoginStart()));
-        });
-
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => RecuperaSenhaDefinitivo()));
         // retorna um objeto do tipo Dialog
         return AlertDialog(
           title: new Text("Email de recuperação de senha enviado!"),
@@ -112,9 +111,9 @@ class _RecuperarSenhaState extends State<RecuperarSenha> {
                             userLogin.email = emailController.text;
                             String resposta = await efetuarLogin(userLogin);
                             print(resposta);
-                            if (resposta == 'OK') {
+                            if (resposta == 'sucesso') {
                               _showDialogSuccessUsuario();
-                            } else if (resposta == 'NOK') {
+                            } else if (resposta == 'falhou') {
                               _showDialogFailed();
                             }
                           },
@@ -126,6 +125,22 @@ class _RecuperarSenhaState extends State<RecuperarSenha> {
                           color: Colors.red,
                         ),
                       ),
+                Container(
+                    width: 200.0,
+                    padding: EdgeInsets.fromLTRB(0.0, 25.0, 0.0, 25.0),
+                    child: RaisedButton(
+                      onPressed: () {
+                          Navigator.of(context).pushReplacement(MaterialPageRoute(
+                              builder: (context) => RecuperaSenhaDefinitivo()));
+                      },
+                      child: Text(
+                        "Tenho um código",
+                        style:
+                        TextStyle(color: Colors.white, fontSize: 25.0),
+                      ),
+                      color: Colors.red,
+                    ),
+                )
                     ]))));
   }
 }

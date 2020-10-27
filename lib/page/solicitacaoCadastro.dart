@@ -8,7 +8,7 @@ import 'package:helplifeandroid/entity/usuario.dart';
 import 'package:helplifeandroid/page/solicitacaoView.dart';
 import 'package:http/http.dart' as http;
 
-const _request = "http://192.168.0.100:9030/api/v1/helplife/solicitacao";
+const _request = "http://192.168.0.104:9006/api/v1/helplife/solicitacao";
 
 class SolicitacaoCadastro extends StatefulWidget {
   final Usuario user;
@@ -24,7 +24,7 @@ List<Hemocentro> listHemocentro = List<Hemocentro>();
 List<Hemocentro> HemocentroList = List<Hemocentro>();
 int HemocentroID = -1;
 Hemocentro hemo = null;
-const _requestTwo = "http://192.168.0.100:9030/api/v1/helplife/usuario";
+const _requestTwo = "http://192.168.0.104:9006/api/v1/helplife/usuario";
 
 class _SolicitacaoCadastroState extends State<SolicitacaoCadastro> {
   Future<void> criarSolicitacao(Solicitacao solicitacao) async {
@@ -40,6 +40,7 @@ class _SolicitacaoCadastroState extends State<SolicitacaoCadastro> {
       print(response.statusCode);
       if (response.statusCode == 201) {
         _showDialogSuccess();
+        _resetFields();
       } else if (response.statusCode == 406) {
         _showDialogFailed();
       }

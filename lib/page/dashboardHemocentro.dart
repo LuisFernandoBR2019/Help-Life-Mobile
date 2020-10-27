@@ -1,6 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:helplifeandroid/entity/usuario.dart';
 import 'package:helplifeandroid/page/campanhaView.dart';
+import 'package:helplifeandroid/page/login.dart';
 import 'package:helplifeandroid/page/perfilHemocentro.dart';
 
 class DashboardHemocentro extends StatefulWidget {
@@ -17,9 +19,30 @@ class _DashboardHemocentroState extends State<DashboardHemocentro> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text("Dashboard"),
         centerTitle: true,
         backgroundColor: Colors.red,
+        actions: <Widget>[
+          IconButton(
+            color: Colors.red,
+            icon: Icon(
+              Icons.exit_to_app,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => LoginStart()));
+            },
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 15),
+            child: Text(
+              "Sair",
+              style: TextStyle(fontSize: 20.0),
+            ),
+          ),
+        ],
       ),
       body: Center(
         child: Column(

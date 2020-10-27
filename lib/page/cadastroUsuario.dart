@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 
 import 'login.dart';
 
-const _request = "http://192.168.0.100:9030/api/v1/helplife/usuariocomum";
+const _request = "http://192.168.0.104:9006/api/v1/helplife/usuariocomum";
 
 class CadUserPage extends StatefulWidget {
   @override
@@ -28,6 +28,7 @@ class _CadUserPage extends State<CadUserPage> {
           print(response.statusCode);
       if (response.statusCode == 201) {
         _showDialogSuccess();
+        _resetFields();
       } else if (response.statusCode == 406) {
         _showDialogFailed();
       }
@@ -531,8 +532,7 @@ class _CadUserPage extends State<CadUserPage> {
                           user.tipoSanguineo = tp;
                           if (_formKey.currentState.validate()) {
                             criaUsuarioComum(user);
-                            // _showDialogSuccess();
-                            _resetFields();
+
                           } else {
                             _showDialogFailed();
                           }
