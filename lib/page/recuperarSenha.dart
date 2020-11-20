@@ -5,7 +5,7 @@ import 'package:helplifeandroid/entity/usuario.dart';
 import 'package:helplifeandroid/page/recuperaSenhaDefinitivo.dart';
 import 'package:http/http.dart' as http;
 
-const _request = "http://192.168.0.104:9006/api/v1/helplife/recuperarSenha";
+const _request = "http://192.168.0.105:9006/api/v1/helplife/recuperarSenha";
 
 class RecuperarSenha extends StatefulWidget {
   @override

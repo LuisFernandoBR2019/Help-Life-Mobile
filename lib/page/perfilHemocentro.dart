@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:helplifeandroid/entity/usuario.dart';
 import 'package:http/http.dart' as http;
 
-var _request = "http://192.168.0.104:9006/api/v1/helplife/usuario/";
+var _request = "http://192.168.0.105:9006/api/v1/helplife/usuario/";
 
-var _requestPut = "http://192.168.0.104:9006/api/v1/helplife/";
+var _requestPut = "http://192.168.0.105:9006/api/v1/helplife/";
 
 Usuario usuario = Usuario();
 
@@ -221,7 +221,7 @@ class _PerfilState extends State<Perfil> {
                 TextFormField(
                   keyboardType: TextInputType.phone,
                   decoration: InputDecoration(
-                      labelText: "Telefone:",
+                      labelText: "Número de Telefone:",
                       labelStyle: TextStyle(color: Colors.red)),
                   textAlign: TextAlign.center,
                   style: TextStyle(color: Colors.red, fontSize: 25.0),
@@ -265,35 +265,35 @@ class _PerfilState extends State<Perfil> {
                 TextFormField(
                   keyboardType: TextInputType.text,
                   decoration: InputDecoration(
-                      labelText: "Estado:",
+                      labelText: "Unidade de Federação:",
                       labelStyle: TextStyle(color: Colors.red)),
                   textAlign: TextAlign.center,
                   style: TextStyle(color: Colors.red, fontSize: 25.0),
                   controller: estadoController,
                   validator: (value) {
                     if (value.isEmpty) {
-                      return "Insira seu Estado!";
+                      return "Insira sua Unidade de Federação!";
                     }
                   },
                 ),
                 TextFormField(
                   keyboardType: TextInputType.text,
                   decoration: InputDecoration(
-                      labelText: "Cidade:",
+                      labelText: "Município:",
                       labelStyle: TextStyle(color: Colors.red)),
                   textAlign: TextAlign.center,
                   style: TextStyle(color: Colors.red, fontSize: 25.0),
                   controller: cidadeController,
                   validator: (value) {
                     if (value.isEmpty) {
-                      return "Insira sua Cidade!";
+                      return "Insira seu Município!";
                     }
                   },
                 ),
                 TextFormField(
                   keyboardType: TextInputType.text,
                   decoration: InputDecoration(
-                      labelText: "Cep:",
+                      labelText: "CEP:",
                       labelStyle: TextStyle(color: Colors.red)),
                   textAlign: TextAlign.center,
                   style: TextStyle(color: Colors.red, fontSize: 25.0),

@@ -8,7 +8,7 @@ import 'package:helplifeandroid/entity/usuario.dart';
 import 'package:helplifeandroid/page/campanhaView.dart';
 import 'package:http/http.dart' as http;
 
-const _request = "http://192.168.0.104:9006/api/v1/helplife/campanha";
+const _request = "http://192.168.0.105:9006/api/v1/helplife/campanha";
 
 class CampanhaCadastro extends StatefulWidget {
   final Usuario user;
@@ -22,7 +22,7 @@ class CampanhaCadastro extends StatefulWidget {
 List<dynamic> hemocentroList = null;
 List<Hemocentro> listHemocentro = List<Hemocentro>();
 Hemocentro hemo = null;
-const _requestTwo = "http://192.168.0.104:9006/api/v1/helplife/usuario";
+const _requestTwo = "http://192.168.0.105:9006/api/v1/helplife/usuario";
 
 List<Hemocentro> HemocentroList = List<Hemocentro>();
 int HemocentroID = -1;
@@ -271,7 +271,7 @@ class _CampanhaCadastroState extends State<CampanhaCadastro> {
                         TextFormField(
                           keyboardType: TextInputType.datetime,
                           decoration: InputDecoration(
-                              labelText: "Data inicio:",
+                              labelText: "Data início:",
                               labelStyle: TextStyle(color: Colors.red)),
                           textAlign: TextAlign.center,
                           style: TextStyle(color: Colors.red, fontSize: 25.0),
@@ -326,7 +326,7 @@ class _CampanhaCadastroState extends State<CampanhaCadastro> {
                         Padding(
                           padding: EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 10.0),
                           child: Text(
-                            "Escolha seu Tipo Sanguineo",
+                            "Escolha seu Tipo Sanguíneo",
                             style: TextStyle(color: Colors.red, fontSize: 25.0),
                           ),
                         ),

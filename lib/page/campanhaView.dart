@@ -15,7 +15,7 @@ List<dynamic> hemocentroListAtualiza = null; //atualiza campanha
 List<Hemocentro> listHemocentroAtualiza =
     List<Hemocentro>(); //atualiza campanha
 
-const _request = "http://192.168.0.104:9006/api/v1/helplife/campanha";
+const _request = "http://192.168.0.105:9006/api/v1/helplife/campanha";
 List<dynamic> campanhas = new List<dynamic>();
 List<Campanha> listaCampanha = List<Campanha>();
 
@@ -293,9 +293,9 @@ class _MyCampanhaState extends State<MyCampanha> {
   }
 
   var ativaCampanha =
-      "http://192.168.0.104:9006/api/v1/helplife/campanha/ativa/";
+      "http://192.168.0.105:9006/api/v1/helplife/campanha/ativa/";
   var desativaCampanha =
-      "http://192.168.0.104:9006/api/v1/helplife/campanha/inativa/";
+      "http://192.168.0.105:9006/api/v1/helplife/campanha/inativa/";
 
   Future<void> ativarCampanha(int idCampanha) async {
     http.get(ativaCampanha + idCampanha.toString(), headers: <String, String>{
@@ -530,7 +530,7 @@ bool _AB1 = false;
 bool _AB2 = false;
 bool _O1 = false;
 bool _O2 = false;
-var _requestTwo = "http://192.168.0.104:9006/api/v1/helplife/campanha/";
+var _requestTwo = "http://192.168.0.105:9006/api/v1/helplife/campanha/";
 
 class _CampanhaIdSimpleState extends State<CampanhaIdSimple> {
   @override
@@ -552,7 +552,7 @@ class _CampanhaIdSimpleState extends State<CampanhaIdSimple> {
                   'Campanha de Doação de Sangue\n \n'
                   'Nome: ${campanha.nome}\n'
                   'Descrição: ${campanha.descricao}\n'
-                  'Data de inicio: ${campanha.dataInicio}\n'
+                  'Data de início: ${campanha.dataInicio}\n'
                   'Data final: ${campanha.dataFinal}\n'
                   'Criado por: ${campanha.usuario.nome}\n'
                   'Para ser doado no Hemocentro: ${campanha.hemocentro.nome}\n'
@@ -597,7 +597,7 @@ class _CampanhaIdSimpleState extends State<CampanhaIdSimple> {
                         enabled: false,
                         keyboardType: TextInputType.text,
                         decoration: InputDecoration(
-                            labelText: "Data Inicio:",
+                            labelText: "Data Início:",
                             labelStyle: TextStyle(color: Colors.red)),
                         textAlign: TextAlign.center,
                         style: TextStyle(color: Colors.red, fontSize: 25.0),
@@ -646,7 +646,7 @@ class _CampanhaIdSimpleState extends State<CampanhaIdSimple> {
                       Padding(
                         padding: EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 10.0),
                         child: Text(
-                          "Tipo Sanguineo:",
+                          "Tipo Sanguíneo:",
                           style: TextStyle(color: Colors.red, fontSize: 25.0),
                         ),
                       ),
@@ -761,7 +761,7 @@ bool __AB1 = false;
 bool __AB2 = false;
 bool __O1 = false;
 bool __O2 = false;
-const _requestThree = "http://192.168.0.104:9006/api/v1/helplife/usuario";
+const _requestThree = "http://192.168.0.105:9006/api/v1/helplife/usuario";
 
 class atualizaCampanha extends StatefulWidget {
   final Usuario user;
@@ -1078,14 +1078,14 @@ class _UpdateState extends State<Update> {
               TextFormField(
                 keyboardType: TextInputType.datetime,
                 decoration: InputDecoration(
-                    labelText: "Data inicio:",
+                    labelText: "Data início:",
                     labelStyle: TextStyle(color: Colors.red)),
                 textAlign: TextAlign.center,
                 style: TextStyle(color: Colors.red, fontSize: 25.0),
                 controller: dataInicioController,
                 validator: (value) {
                   if (value.isEmpty) {
-                    return "Insira a data de inicio!";
+                    return "Insira a data de início!";
                   }
                 },
               ),
@@ -1132,7 +1132,7 @@ class _UpdateState extends State<Update> {
               Padding(
                 padding: EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 10.0),
                 child: Text(
-                  "Escolha seu Tipo Sanguineo",
+                  "Escolha seu Tipo Sanguíneo",
                   style: TextStyle(color: Colors.red, fontSize: 25.0),
                 ),
               ),

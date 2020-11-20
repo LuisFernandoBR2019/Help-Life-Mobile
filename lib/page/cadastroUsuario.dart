@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 
 import 'login.dart';
 
-const _request = "http://192.168.0.104:9006/api/v1/helplife/usuariocomum";
+const _request = "http://192.168.0.105:9006/api/v1/helplife/usuariocomum";
 
 class CadUserPage extends StatefulWidget {
   @override
@@ -237,35 +237,35 @@ class _CadUserPage extends State<CadUserPage> {
                   TextFormField(
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
-                        labelText: "Estado:",
+                        labelText: "Unidade de Federação:",
                         labelStyle: TextStyle(color: Colors.red)),
                     textAlign: TextAlign.center,
                     style: TextStyle(color: Colors.red, fontSize: 25.0),
                     controller: estadoController,
                     validator: (value) {
                       if (value.isEmpty) {
-                        return "Insira seu Estado!";
+                        return "Insira sua Unidade de Federação!";
                       }
                     },
                   ),
                   TextFormField(
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
-                        labelText: "Cidade:",
+                        labelText: "Município:",
                         labelStyle: TextStyle(color: Colors.red)),
                     textAlign: TextAlign.center,
                     style: TextStyle(color: Colors.red, fontSize: 25.0),
                     controller: cidadeController,
                     validator: (value) {
                       if (value.isEmpty) {
-                        return "Insira sua Cidade!";
+                        return "Insira seu Município!";
                       }
                     },
                   ),
                   TextFormField(
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
-                        labelText: "Cep:",
+                        labelText: "CEP:",
                         labelStyle: TextStyle(color: Colors.red)),
                     textAlign: TextAlign.center,
                     style: TextStyle(color: Colors.red, fontSize: 25.0),
@@ -307,7 +307,7 @@ class _CadUserPage extends State<CadUserPage> {
                   Padding(
                     padding: EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 10.0),
                     child: Text(
-                      "Escolha seu Tipo Sanguineo",
+                      "Escolha seu Tipo Sanguíneo",
                       style: TextStyle(color: Colors.red, fontSize: 25.0),
                     ),
                   ),

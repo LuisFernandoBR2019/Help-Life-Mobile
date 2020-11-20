@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:helplifeandroid/entity/dadosLogin.dart';
 
 
-const _request = "http://192.168.0.104:9006/api/v1/helplife/alterarSenha";
+const _request = "http://192.168.0.105:9006/api/v1/helplife/alterarSenha";
 
 class RecuperaSenhaDefinitivo extends StatefulWidget {
   @override

@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:helplifeandroid/entity/solicitacao.dart';
 import 'package:share/share.dart';
 
-const _request = "http://192.168.0.104:9006/api/v1/helplife/solicitacao";
+const _request = "http://192.168.0.105:9006/api/v1/helplife/solicitacao";
 
 List<dynamic> solicitacoes = new List<dynamic>();
 List<Solicitacao> listaSolicitacao = null;
@@ -145,9 +145,9 @@ class MySolicitacao extends StatefulWidget {
 
 class _MySolicitacaoState extends State<MySolicitacao> {
   var ativaSolicitacao =
-      "http://192.168.0.104:9006/api/v1/helplife/solicitacao/ativa/";
+      "http://192.168.0.105:9006/api/v1/helplife/solicitacao/ativa/";
   var desativaSolicitacao =
-      "http://192.168.0.104:9006/api/v1/helplife/solicitacao/inativa/";
+      "http://192.168.0.105:9006/api/v1/helplife/solicitacao/inativa/";
 
   Future<void> ativarSolicitacao(int idCampanha) async {
     http.get(ativaSolicitacao + idCampanha.toString(),
@@ -430,7 +430,7 @@ class _SolicitacaoState extends State<SolicitacaoList> {
   }
 }
 
-var _requestTwo = "http://192.168.0.104:9006/api/v1/helplife/usuario";
+var _requestTwo = "http://192.168.0.105:9006/api/v1/helplife/usuario";
 
 class SolicitacaoSimpleID extends StatefulWidget {
   final int SolicitacaoID;
@@ -619,7 +619,7 @@ class _SolicitacaoSimpleIDState extends State<SolicitacaoSimpleID> {
                       Padding(
                         padding: EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 10.0),
                         child: Text(
-                          "Escolha seu Tipo Sanguineo",
+                          "Escolha seu Tipo Sanguíneo",
                           style: TextStyle(color: Colors.red, fontSize: 25.0),
                         ),
                       ),
@@ -1076,7 +1076,7 @@ class _SolicitacaoIDSimpleState extends State<SolicitacaoIDSimple> {
               Padding(
                 padding: EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 10.0),
                 child: Text(
-                  "Escolha seu Tipo Sanguineo",
+                  "Escolha seu Tipo Sanguíneo",
                   style: TextStyle(color: Colors.red, fontSize: 25.0),
                 ),
               ),

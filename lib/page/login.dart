@@ -12,7 +12,7 @@ import 'package:http/http.dart' as http;
 import 'cadastroHemocentro.dart';
 import 'cadastroUsuario.dart';
 
-const _request = "http://192.168.0.104:9006/api/v1/helplife/login";
+const _request = "http://192.168.0.105:9006/api/v1/helplife/login";
 
 class LoginStart extends StatefulWidget {
   @override
@@ -55,7 +55,6 @@ class _LoginState extends State<LoginStart> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        Center(child: CircularProgressIndicator());
         if (tipoUsuario == 0) {
           Future.delayed(Duration(seconds: 3), () {
             Navigator.push(
@@ -72,10 +71,10 @@ class _LoginState extends State<LoginStart> {
                     builder: (context) => DashboardHemocentro(user)));
           });
         }
-        // retorna um objeto do tipo Dialog
-        return AlertDialog(
-          title: new Text("Acesso efetuado com sucesso!"),
-        );
+          // retorna um objeto do tipo Dialog
+          return AlertDialog(
+            title: new Text("Acesso efetuado com sucesso!"),
+          );
       },
     );
   }
@@ -84,7 +83,6 @@ class _LoginState extends State<LoginStart> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        Center(child: CircularProgressIndicator());
         Future.delayed(Duration(seconds: 3), () {
           Navigator.of(context).pop();
         });
